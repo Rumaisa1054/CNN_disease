@@ -43,6 +43,10 @@ def predict_skin_lesion(img_path):
         return class_name, confidence
     except Exception as e:
         return str(e), 0.0
+        
+@app.route('/')
+def home():
+    return "TensorFlow Flask API is running!"
 
 # Flask route
 @app.route('/predict', methods=['POST'])
