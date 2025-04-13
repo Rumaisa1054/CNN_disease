@@ -1,16 +1,12 @@
+import subprocess
+import time
 import streamlit as st
 import requests
 import numpy as np
 from PIL import Image
-import subprocess
-import time
-
-# Streamlit app title
-st.title("TensorFlow Model via Flask API")
 
 # Function to start Flask API in the background
 def start_flask_api():
-    # Start the Flask app (api.py) as a background process
     subprocess.Popen(["python", "api.py"])
 
 # Check if Flask API is already running, if not, start it
@@ -21,7 +17,7 @@ try:
 except requests.exceptions.RequestException:
     st.write("Flask API not running. Starting it now...")
     start_flask_api()
-    time.sleep(2)  # Wait a moment for Flask to start
+    time.sleep(5)  # Increased sleep time to ensure Flask has enough time to start
 
 # File uploader for image input
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
