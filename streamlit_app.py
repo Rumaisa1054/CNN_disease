@@ -1,19 +1,28 @@
 import streamlit as st
 import requests
 import numpy as np
+from PIL import Image
+import io
 
 # Streamlit app
 st.title("TensorFlow Model via Flask API")
 
-# Input form
-input_data = st.text_input("Enter input data (comma separated)")
+# File uploader for image input
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
-if input_data:
-    # Convert input to numpy array
-    input_array = np.array([float(x) for x in input_data.split(',')])
+if uploaded_file:
+    # Open the uploaded image
+    image = Image.open(uploaded_file)
+    
+    # Display the image in the app
+    st.image(image, caption='Uploaded Image.', use_column_width=True)
 
-    # Prepare the payload
-    payload = {'input': input_array.tolist()}
+    # Convert image to numpy array (for TensorFlow model)
+    # Optionally, resize or preprocess the image depending on your model
+    image_array = np.array(image)
+
+    # Prepare the payload (convert image array to list for JSON format)
+    payload = {'image': image_array.tolist()}
 
     # Send request to Flask API
     response = requests.post('http://127.0.0.1:5000/predict', json=payload)
